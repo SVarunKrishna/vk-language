@@ -1,0 +1,9 @@
+int mukiyam() {
+    int a = 5;
+    int b = 3;
+    haa (a > b) {
+        Paaru a;
+    } uhh {
+        Paaru b;
+    }
+}
