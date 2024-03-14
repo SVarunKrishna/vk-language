@@ -1,0 +1,80 @@
+# Vk Programming Language
+
+Vk is a simple programming language designed for learning purposes. It features a C-like syntax with custom keywords and supports basic arithmetic operations, control flow statements, and input/output operations.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Usage](#usage)
+- [Syntax](#syntax)
+- [Example](#example)
+- [Installation](#installation)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+Vk programming language is a lightweight and easy-to-learn language designed to help beginners understand programming concepts. It provides a simple syntax with custom keywords inspired by the Tamil language, making it accessible to Tamil-speaking communities.
+
+## Features
+
+- **Simple Syntax**: Vk has a syntax similar to C, making it easy for beginners to understand.
+- **Custom Keywords**: Keywords are inspired by the Tamil language, adding a cultural touch to the language.
+- **Arithmetic Operations**: Vk supports basic arithmetic operations such as addition, subtraction, multiplication, and division.
+- **Control Flow**: Control flow statements include if-else, for loop, while loop, and do-while loop.
+- **Input/Output**: Vk supports input/output operations for printing and scanning values.
+
+## Usage
+
+To use Vk programming language, follow these steps:
+
+1. **Install Python**: Ensure you have Python installed on your system.
+2. **Download Vk Interpreter**: Download or clone the Vk interpreter code from the GitHub repository.
+3. **Write Vk Code**: Write your Vk code in a text editor or IDE.
+4. **Run Interpreter**: Execute the Vk interpreter script, passing your Vk code file as an argument.
+
+Example:
+
+  
+## Syntax
+
+The syntax of Vk programming language is similar to C, with custom keywords inspired by the Tamil language. Here's a list of all syntax:
+
+- `haa`: If statement
+- `haa uhh`: If-else statement
+- `haa uhha`: If-elif-else statement
+- `haan`: For loop
+- `Mm`: While loop
+- `ye mm`: Do-while loop
+- `Paaru`: Print statement
+- `sollu`: Scan statement
+- `int mukiyam`: Main function declaration
+- `seru`: Addition operation
+- `kora`: Subtraction operation
+- `Ona`: Multiplication operation
+- `piri`: Division operation
+
+## Example
+
+Here's a simple example of a Vk program:
+
+```vk
+int mukiyam() {
+    int a = 5;
+    int b = 3;
+    Paaru a b;
+    int c = seru a b;
+    Paaru c;
+}
+
+  Installation
+Vk programming language requires Python to run. You can download or clone the Vk interpreter code from the GitHub repository.
+  git clone https://github.com/your_username/vk-interpreter.git
+
+  Contributing
+Contributions to Vk programming language are welcome! If you have any ideas, bug fixes, or improvements, feel free to open an issue or submit a pull request on the GitHub repository.
+
+  License
+This project is licensed under the MIT License. See the LICENSE file for details.
+  
