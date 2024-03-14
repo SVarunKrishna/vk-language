@@ -1,0 +1,54 @@
+Variable Declaration:
+
+int mukiyam() {
+    int variable_name = value;
+}
+
+Keyword for defining the main function: int mukiyam()
+Keyword for variable declaration: int
+Keyword for assignment: =
+
+2. Conditional Statements:
+
+haa (condition) {
+    // True block
+} uhh {
+    // False block
+}
+
+Keyword for if statement: haa
+Keyword for else statement: uhh
+
+3. Loop Statements:
+
+For Loop:
+
+aku (initialization; condition; increment) {
+    // Loop body
+}
+
+Keyword for for loop: aku
+
+While Loop:
+
+ohhh (condition) {
+    // Loop body
+}
+
+Keyword for while loop: ohhh
+
+Do-While Loop:
+
+kick {
+    // Loop body
+} ohhh (condition);
+
+Keyword for do-while loop: kick ohhh
+
+4. Input/Output:
+
+Paaru value;
+sollu variable_name;
+
+Keyword for output: Paaru
+Keyword for input: sollu
