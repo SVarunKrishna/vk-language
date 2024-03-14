@@ -1,0 +1,73 @@
+thodarai - Class
+
+Meaning: Indicates the beginning of a class definition.
+Function: Defines a class with its attributes and methods.
+athu - Define
+
+Meaning: Marks the beginning of a function or method definition.
+Function: Defines a function or method with its parameters and implementation.
+idam - Init
+
+Meaning: Marks the initialization of an object or class.
+Function: Initializes the attributes and properties of an object or class.
+mudhala - End
+
+Meaning: Marks the end of a class or function definition.
+Function: Indicates the completion of a class or function definition block.
+niyal - For
+
+Meaning: Indicates the beginning of a for loop.
+Function: Initiates a loop that iterates over a sequence of values or performs a fixed number of iterations.
+siru - If
+
+Meaning: Marks the beginning of an if statement.
+Function: Evaluates a condition and executes a block of code if the condition is true.
+koodal - Else
+
+Meaning: Marks the beginning of an else block.
+Function: Provides an alternative block of code to execute if the condition in the preceding if statement is false.
+ippathaal - Elif
+
+Meaning: Marks the beginning of an elif (else-if) block.
+Function: Evaluates an additional condition if the preceding if statement's condition is false.
+annippadu - Return
+
+Meaning: Indicates the return of a value from a function.
+Function: Terminates the execution of a function and returns a value to the caller.
+kootu - Append
+
+Meaning: Adds an element to a list or collection.
+Function: Modifies a list or collection by adding a new element to it.
+moolyam - Variable
+
+Meaning: Declares a variable with a specified name and initial value.
+Function: Defines a named storage location to hold data during program execution.
+Paaru - Printf
+
+Meaning: Outputs formatted data to the standard output.
+Function: Prints formatted text or data to the console or standard output stream.
+sollu - Scanf
+
+Meaning: Reads formatted data from the standard input.
+Function: Reads input from the user or standard input stream and stores it in variables.
+int mukiyam - Int Main
+
+Meaning: Marks the beginning of the main function.
+Function: Defines the entry point of the program where execution begins.
+seru - Add
+
+Meaning: Performs addition operation.
+Function: Adds two or more numerical values together.
+kora - Subtract
+
+Meaning: Performs subtraction operation.
+Function: Subtracts one numerical value from another.
+Ona - Multiply
+
+Meaning: Performs multiplication operation.
+Function: Multiplies two or more numerical values together.
+piri - Divide
+
+Meaning: Performs division operation.
+Function: Divides one numerical value by another.
+These keywords play crucial roles in defining the structure, behavior, and logic of programs written in the VK programming language.
