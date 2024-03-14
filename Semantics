@@ -1,0 +1,18 @@
+Variable Declaration:
+
+When a variable is declared (int variable_name = value;), it allocates memory for the variable and initializes it with the specified value.
+Conditional Statements:
+
+In an if statement (haa (condition) { true_block } uhh { false_block }), the condition is evaluated. If it is true, the statements in the true_block are executed. Otherwise, the statements in the false_block are executed.
+Loop Statements:
+
+In a for loop (aku (initialization; condition; increment) { loop_body }), the initialization is executed once before the loop starts. The condition is checked before each iteration, and if it evaluates to true, the loop_body is executed. After each iteration, the increment is executed.
+In a while loop (ohhh (condition) { loop_body }), the condition is checked before each iteration, and if it evaluates to true, the loop_body is executed.
+In a do-while loop (kick { loop_body } ohhh (condition);), the loop_body is executed at least once, and then the condition is checked. If it evaluates to true, the loop_body is executed again.
+Input/Output:
+
+The Paaru keyword is used for output (Paaru value;), which prints the value to the standard output.
+The sollu keyword is used for input (sollu variable_name;), which reads a value from the standard input and assigns it to the specified variable.
+Expression Evaluation:
+
+Expressions are evaluated according to standard arithmetic rules: multiplication and division have higher precedence than addition and subtraction. Parentheses can be used to override the default precedence.
