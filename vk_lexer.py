@@ -6,19 +6,37 @@ class VK_Lexer:
         self.tokens = []
 
     def tokenize(self):
-        keyword_patterns = {
-            'haa': r'\bhaa\b',
-            'uhh': r'\buhh\b',
-            'aku': r'\baku\b',
-            'ohhh': r'\bohhh\b',
-            'kick': r'\bkick\b',
-            'Paaru': r'\bPaaru\b',
-            'sollu': r'\bsollu\b',
-            'int_mukiyam': r'\bint\s+mukiyam\b'
+        keywords = {
+            'thodarai': 'CLASS',
+            'athu': 'DEF',
+            'idam': 'INIT',
+            'mudhala': 'END',
+            'niyal': 'FOR',
+            'siru': 'IF',
+            'koodal': 'ELSE',
+            'ippathaal': 'ELIF',
+            'annippadu': 'RETURN',
+            'kootu': 'APPEND',
+            'moolyam': 'VARIABLE',
+            'Paaru': 'PRINTF',
+            'sollu': 'SCANF',
+            'int mukiyam': 'INT_MAIN',
+            'seru': 'ADD',
+            'kora': 'SUBTRACT',
+            'Ona': 'MULTIPLY',
+            'piri': 'DIVIDE',
+            'nirvarthai': 'IDENTIFIER'
         }
-        
-        all_keywords_pattern = '|'.join(pattern for pattern in keyword_patterns.values())
 
-        self.tokens = re.findall(r'\b(?:' + all_keywords_pattern + r'|\d+|\+|\-|\*|\/|\(|\)|[a-zA-Z_][a-zA-Z0-9_]*)\b', self.code)
+        tokens_regex = '|'.join([re.escape(keyword) for keyword in keywords.keys()])
+        pattern = re.compile(tokens_regex)
+
+        matches = pattern.finditer(self.code)
+        for match in matches:
+            token = match.group()
+            if token in keywords:
+                self.tokens.append((keywords[token], token))
+            else:
+                self.tokens.append(('NUMBER', token))  # Assuming all other tokens are numbers
         return self.tokens
-      
+        
