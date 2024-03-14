@@ -1,73 +1,92 @@
-thodarai - Class
+haa:
 
-Meaning: Indicates the beginning of a class definition.
-Function: Defines a class with its attributes and methods.
-athu - Define
+Meaning: Represents the "if" keyword in conditional statements.
+Function: Begins an if statement where the provided condition is evaluated. If the condition is true, the statements within the block are executed.
+uhh:
 
-Meaning: Marks the beginning of a function or method definition.
-Function: Defines a function or method with its parameters and implementation.
-idam - Init
+Meaning: Represents the "else" keyword in conditional statements.
+Function: Denotes the block of code to be executed if the condition in the corresponding "if" statement is false.
+uhha:
 
-Meaning: Marks the initialization of an object or class.
-Function: Initializes the attributes and properties of an object or class.
-mudhala - End
+Meaning: Represents the "elif" keyword in conditional statements.
+Function: Provides an alternative condition to be evaluated if the previous "if" or "elif" conditions are false. If the condition is true, the statements within the block are executed.
+haan:
 
-Meaning: Marks the end of a class or function definition.
-Function: Indicates the completion of a class or function definition block.
-niyal - For
+Meaning: Represents the "for" keyword in loop statements.
+Function: Begins a for loop where the specified initialization, condition, and update expressions are evaluated. The statements within the block are executed iteratively based on the condition.
+Mm:
 
-Meaning: Indicates the beginning of a for loop.
-Function: Initiates a loop that iterates over a sequence of values or performs a fixed number of iterations.
-siru - If
+Meaning: Represents the "while" keyword in loop statements.
+Function: Begins a while loop where the specified condition is evaluated before each iteration. If the condition is true, the statements within the block are executed.
+ye mm:
 
-Meaning: Marks the beginning of an if statement.
-Function: Evaluates a condition and executes a block of code if the condition is true.
-koodal - Else
+Meaning: Represents the "do-while" keyword in loop statements.
+Function: Begins a do-while loop where the statements within the block are executed at least once, and then the condition is evaluated. If the condition is true, the loop continues.
+Paaru:
 
-Meaning: Marks the beginning of an else block.
-Function: Provides an alternative block of code to execute if the condition in the preceding if statement is false.
-ippathaal - Elif
+Meaning: Represents the "print" keyword for output.
+Function: Prints the values of the provided expressions to the console.
+sollu:
 
-Meaning: Marks the beginning of an elif (else-if) block.
-Function: Evaluates an additional condition if the preceding if statement's condition is false.
-annippadu - Return
+Meaning: Represents the "scan" keyword for input.
+Function: Scans input from the user and stores it in the specified variable.
+int mukiyam:
 
-Meaning: Indicates the return of a value from a function.
-Function: Terminates the execution of a function and returns a value to the caller.
-kootu - Append
+Meaning: Represents the "int main" function declaration in C-like languages.
+Function: Declares the main function where the execution of the program begins.
+seru, kora, Ona, piri:
 
-Meaning: Adds an element to a list or collection.
-Function: Modifies a list or collection by adding a new element to it.
-moolyam - Variable
+Meaning: Represent arithmetic operators for addition, subtraction, multiplication, and division, respectively.
+Function: Perform the corresponding arithmetic operation on the operands.
+moolyam:
 
-Meaning: Declares a variable with a specified name and initial value.
-Function: Defines a named storage location to hold data during program execution.
-Paaru - Printf
+Meaning: Represents the "int" keyword for integer data type.
+Function: Specifies the integer data type for variable declarations.
+varisai:
 
-Meaning: Outputs formatted data to the standard output.
-Function: Prints formatted text or data to the console or standard output stream.
-sollu - Scanf
+Meaning: Represents the "float" keyword for floating-point number data type.
+Function: Specifies the floating-point number data type for variable declarations.
+vaathiyar:
 
-Meaning: Reads formatted data from the standard input.
-Function: Reads input from the user or standard input stream and stores it in variables.
-int mukiyam - Int Main
+Meaning: Represents the "char" keyword for character data type.
+Function: Specifies the character data type for variable declarations.
+pali:
 
-Meaning: Marks the beginning of the main function.
-Function: Defines the entry point of the program where execution begins.
-seru - Add
+Meaning: Represents the "bool" keyword for boolean data type.
+Function: Specifies the boolean data type for variable declarations.
+solluvai:
 
-Meaning: Performs addition operation.
-Function: Adds two or more numerical values together.
-kora - Subtract
+Meaning: Represents the "string" keyword for string data type.
+Function: Specifies the string data type for variable declarations.
+athu:
 
-Meaning: Performs subtraction operation.
-Function: Subtracts one numerical value from another.
-Ona - Multiply
+Meaning: Represents the "def" keyword for defining functions.
+Function: Marks the beginning of a function definition.
+idam:
 
-Meaning: Performs multiplication operation.
-Function: Multiplies two or more numerical values together.
-piri - Divide
+Meaning: Represents the "class" keyword for defining classes.
+Function: Marks the beginning of a class definition.
+mudhala:
 
-Meaning: Performs division operation.
-Function: Divides one numerical value by another.
-These keywords play crucial roles in defining the structure, behavior, and logic of programs written in the VK programming language.
+Meaning: Represents the "end" keyword for ending class or function definitions.
+Function: Marks the end of a class or function definition.
+niyal:
+
+Meaning: Represents the "for" keyword for loop statements.
+Function: Marks the beginning of a for loop.
+koodal:
+
+Meaning: Represents the "else" keyword for else part of if-else statements.
+Function: Marks the beginning of the else part of an if-else statement.
+ippathaal:
+
+Meaning: Represents the "elif" keyword for elif part of if-elif-else statements.
+Function: Marks the beginning of the elif part of an if-elif-else statement.
+annippadu:
+
+Meaning: Represents the "return" keyword for returning values from functions.
+Function: Indicates the return of a value from a function.
+kootu:
+
+Meaning: Represents the "append" keyword for appending to lists or arrays.
+Function: Appends the specified value to a list or array.
