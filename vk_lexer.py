@@ -22,8 +22,8 @@ class VkLexer:
             'kora': 'SUBTRACT',
             'Ona': 'MULTIPLY',
             'piri': 'DIVIDE',
-            'vaathiyar_padithaal': 'SCAN',
-            'vaathiyar_kodu': 'PRINT',
+            'vaathiyar_padithaal': 'INPUT',
+            'vaathiyar_kodu': 'OUTPUT',
             'moolyam_vivarithi': 'MATH_LIBRARY',
             'moolyam_mithalai': 'SQRT',
             'moolyam_sin': 'SIN',
@@ -114,4 +114,4 @@ lexer = VkLexer(code)
 tokens = lexer.tokenize()
 for token in tokens:
     print(token)
-                        
+    
