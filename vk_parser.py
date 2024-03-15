@@ -1,158 +1,143 @@
-class VK_Parser:
+        class VK_Parser:
     def __init__(self, tokens):
         self.tokens = tokens
         self.current_token_index = 0
 
     def parse(self):
         parsed_code = []
-
         while self.current_token_index < len(self.tokens):
-            statement = self.parse_statement()
-            parsed_code.append(statement)
+            token_type, token_value = self.tokens[self.current_token_index]
 
+            if token_type == 'KEYWORD':
+                if token_value == 'INT_MAIN':
+                    parsed_code.append(self.parse_int_main())
+                elif token_value == 'SCANF':
+                    parsed_code.append(self.parse_scanf())
+                elif token_value == 'PRINTF':
+                    parsed_code.append(self.parse_printf())
+                elif token_value == 'IF':
+                    parsed_code.append(self.parse_if_statement())
+                elif token_value == 'FOR':
+                    parsed_code.append(self.parse_for_loop())
+                elif token_value == 'WHILE':
+                    parsed_code.append(self.parse_while_loop())
+                elif token_value == 'DO_WHILE':
+                    parsed_code.append(self.parse_do_while_loop())
+            self.current_token_index += 1
         return parsed_code
 
-    def parse_statement(self):
-        current_token = self.tokens[self.current_token_index]
+    def parse_int_main(self):
+        # Parse the main function block
+        self.consume('PUNCTUATION', '{')
+        main_block = self.parse_block()
+        self.consume('PUNCTUATION', '}')
+        return ('INT_MAIN', main_block)
 
-        if current_token[1] == 'IF':
-            return self.parse_if_statement()
-        elif current_token[1] == 'FOR':
-            return self.parse_for_loop()
-        elif current_token[1] == 'WHILE':
-            return self.parse_while_loop()
-        elif current_token[1] == 'DO':
-            return self.parse_do_while_loop()
-        elif current_token[1] == 'PRINTF':
-            return self.parse_print_statement()
-        elif current_token[1] == 'SCANF':
-            return self.parse_scan_statement()
-        elif current_token[1] == 'INT_MAIN':
-            return self.parse_main_function()
-        elif current_token[1] == 'IDENTIFIER':
-            return self.parse_assignment_statement()
-        else:
-            raise SyntaxError("Invalid statement")
+    def parse_scanf(self):
+        # Parse the variable to scan into
+        variable = self.consume('IDENTIFIER')
+        return ('SCANF', variable)
+
+    def parse_printf(self):
+        # Parse the print format string and values
+        format_string = self.consume('STRING')
+        values = []
+        while self.peek()[0] != 'PUNCTUATION' or self.peek()[1] != ';':
+            values.append(self.consume('IDENTIFIER'))
+        return ('PRINTF', format_string, values)
 
     def parse_if_statement(self):
-        if_statement = ['IF']
-        self.current_token_index += 1  # Skip 'siru' keyword
-        condition = self.parse_expression()
-        if_statement.append(condition)
-
-        # Parse the true block
-        true_block = []
-        self.current_token_index += 1  # Skip 'niyal' keyword
-        while self.tokens[self.current_token_index][0] != 'koodal':
-            true_block.append(self.parse_statement())
-        if_statement.append(true_block)
-
-        # Check for 'koodal' keyword (start of else block)
-        current_token = self.tokens[self.current_token_index]
-        if current_token[0] == 'koodal':
-            self.current_token_index += 1  # Skip 'koodal' keyword
-            else_block = []
-            while self.tokens[self.current_token_index][0] != 'mudhala':
-                else_block.append(self.parse_statement())
-            if_statement.append(else_block)
-
-        return if_statement
+        # Parse the if statement
+        self.consume('PUNCTUATION', '(')
+        condition = self.parse_condition()
+        self.consume('PUNCTUATION', ')')
+        true_block = self.parse_block()
+        false_block = None
+        if self.peek() == ('KEYWORD', 'ELSE'):
+            self.consume('KEYWORD', 'ELSE')
+            false_block = self.parse_block()
+        return ('IF', condition, true_block, false_block)
 
     def parse_for_loop(self):
-        for_loop = ['FOR']
-        self.current_token_index += 1  # Skip 'niyal' keyword
-        variable = self.tokens[self.current_token_index][0]
-        for_loop.append(variable)
-        
-        # Skip variable, start, 'seru', end, 'seru', step, 'mudhala'
-        self.current_token_index += 7
-        block = []
-        while self.tokens[self.current_token_index][0] != 'mudhala':
-            block.append(self.parse_statement())
-        for_loop.append(block)
-
-        return for_loop
+        # Parse the for loop
+        self.consume('PUNCTUATION', '(')
+        initialization = self.parse_assignment()
+        self.consume('PUNCTUATION', ';')
+        condition = self.parse_condition()
+        self.consume('PUNCTUATION', ';')
+        update = self.parse_assignment()
+        self.consume('PUNCTUATION', ')')
+        loop_block = self.parse_block()
+        return ('FOR', initialization, condition, update, loop_block)
 
     def parse_while_loop(self):
-        while_loop = ['WHILE']
-        self.current_token_index += 1  # Skip 'niyal' keyword
-        condition = self.parse_expression()
-        while_loop.append(condition)
-        
-        # Skip 'mudhala'
-        self.current_token_index += 1
-        block = []
-        while self.tokens[self.current_token_index][0] != 'mudhala':
-            block.append(self.parse_statement())
-        while_loop.append(block)
-
-        return while_loop
+        # Parse the while loop
+        self.consume('PUNCTUATION', '(')
+        condition = self.parse_condition()
+        self.consume('PUNCTUATION', ')')
+        loop_block = self.parse_block()
+        return ('WHILE', condition, loop_block)
 
     def parse_do_while_loop(self):
-        do_while_loop = ['DO']
-        self.current_token_index += 1  # Skip 'niyal' keyword
-        
-        # Skip 'mudhala'
-        self.current_token_index += 1
+        # Parse the do-while loop
+        loop_block = self.parse_block()
+        self.consume('KEYWORD', 'WHILE')
+        self.consume('PUNCTUATION', '(')
+        condition = self.parse_condition()
+        self.consume('PUNCTUATION', ')')
+        self.consume('PUNCTUATION', ';')
+        return ('DO_WHILE', condition, loop_block)
+
+    def parse_condition(self):
+        # Parse the condition for if, while, and do-while statements
+        return self.parse_expression()
+
+    def parse_block(self):
+        # Parse a block of statements
         block = []
-        while self.tokens[self.current_token_index][0] != 'mudhala':
+        while self.peek() != ('PUNCTUATION', '}'):
             block.append(self.parse_statement())
-        do_while_loop.append(block)
-        
-        # Skip 'ye', 'mm', condition
-        self.current_token_index += 3
-        condition = self.parse_expression()
-        do_while_loop.append(condition)
+        return block
 
-        return do_while_loop
+    def parse_statement(self):
+        # Parse a single statement
+        token_type, token_value = self.peek()
+        if token_type == 'KEYWORD':
+            if token_value == 'IF':
+                return self.parse_if_statement()
+            elif token_value == 'FOR':
+                return self.parse_for_loop()
+            elif token_value == 'WHILE':
+                return self.parse_while_loop()
+            elif token_value == 'DO_WHILE':
+                return self.parse_do_while_loop()
+        elif token_type == 'IDENTIFIER':
+            return self.parse_assignment()
+        # Add support for other statement types here
 
-    def parse_print_statement(self):
-        print_statement = ['PRINTF']
-        self.current_token_index += 1  # Skip 'Paaru' keyword
-        
-        values = []
-        while self.tokens[self.current_token_index][0] != 'mudhala':
-            values.append(self.parse_expression())
-        print_statement.append(values)
-
-        return print_statement
-
-    def parse_scan_statement(self):
-        scan_statement = ['SCANF']
-        self.current_token_index += 1  # Skip 'sollu' keyword
-        
-        variable = self.tokens[self.current_token_index][0]
-        scan_statement.append(variable)
-        
-        return scan_statement
-
-    def parse_main_function(self):
-        main_function = ['INT_MAIN']
-        self.current_token_index += 1  # Skip 'int mukiyam' keyword
-        
-        # Skip '{'
-        self.current_token_index += 1
-        block = []
-        while self.tokens[self.current_token_index][0] != 'mudhala':
-            block.append(self.parse_statement())
-        main_function.append(block)
-
-        return main_function
-
-    def parse_assignment_statement(self):
-        assignment_statement = ['ASSIGNMENT']
-        variable = self.tokens[self.current_token_index][0]
-        assignment_statement.append(variable)
-        
-        # Skip variable, '=', value, 'mudhala'
-        self.current_token_index += 4
+    def parse_assignment(self):
+        # Parse an assignment statement
+        variable = self.consume('IDENTIFIER')
+        self.consume('OPERATOR', '=')
         value = self.parse_expression()
-        assignment_statement.append(value)
-
-        return assignment_statement
+        self.consume('PUNCTUATION', ';')
+        return ('ASSIGNMENT', variable, value)
 
     def parse_expression(self):
-        token = self.tokens[self.current_token_index]
-        self.current_token_index += 1
-        return token[0]
+        # Parse an expression
+        # Placeholder implementation
+        return ('EXPRESSION', 'Placeholder')
+
+    def peek(self):
+        if self.current_token_index < len(self.tokens):
+            return self.tokens[self.current_token_index]
+        return None
+
+    def consume(self, expected_type, expected_value=None):
+        token_type, token_value = self.tokens[self.current_token_index]
+        if token_type == expected_type and (expected_value is None or token_value == expected_value):
+            self.current_token_index += 1
+            return token_value
+        else:
+            raise SyntaxError(f"Expected {expected_type}, got {token_type} with value '{token_value}'")
         
