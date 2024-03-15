@@ -1,12 +1,9 @@
 import re
 
-class VK_Lexer:
+class VkLexer:
     def __init__(self, code):
         self.code = code
-        self.tokens = []
-
-    def tokenize(self):
-        keywords = {
+        self.keywords = {
             'thodarai': 'CLASS',
             'athu': 'DEF',
             'idam': 'INIT',
@@ -17,184 +14,104 @@ class VK_Lexer:
             'ippathaal': 'ELIF',
             'annippadu': 'RETURN',
             'kootu': 'APPEND',
-            'moolyam': 'INTEGER',
-            'varisai': 'FLOAT',
-            'vaathiyar': 'CHAR',
-            'pali': 'BOOLEAN',
-            'solluvai': 'STRING',
+            'moolyam': 'VARIABLE',
             'Paaru': 'PRINTF',
             'sollu': 'SCANF',
             'int mukiyam': 'INT_MAIN',
             'seru': 'ADD',
             'kora': 'SUBTRACT',
             'Ona': 'MULTIPLY',
-            'piri': 'DIVIDE'
+            'piri': 'DIVIDE',
+            'vaathiyar_padithaal': 'SCAN',
+            'vaathiyar_kodu': 'PRINT',
+            'moolyam_vivarithi': 'MATH_LIBRARY',
+            'moolyam_mithalai': 'SQRT',
+            'moolyam_sin': 'SIN',
+            'vaakku_vivarithi': 'STRING_LIBRARY',
+            'vaakku_seer': 'CONCAT',
+            'vaakku_udaiya': 'TO_UPPER',
+            'kaar_vivarithi': 'DATETIME_LIBRARY',
+            'udaiya_kaar': 'CURRENT_DATE',
+            'kaar_vithaika': 'FORMAT_DATE',
+            'arai_kuthirai': 'RANDOM_LIBRARY',
+            'arai_kuthirai_mithalai': 'RANDOM_INT',
+            'arai_kuthirai_vithai': 'RANDOM_CHOICE',
+            'veezh_vivarithi': 'OS_LIBRARY',
+            'veezh_vaakiyam': 'LIST_FILES',
+            'veezh_udaiya_kattam': 'CREATE_DIRECTORY',
+            'mann_kadhai': 'VK_LIBRARY',
+            'mann_pirachanai': 'VK_VERSION',
+            'mann_ootru': 'PLATFORM_ID'
         }
-        
-        operators = ['+', '-', '*', '/', '=', '==', '!=', '<', '>', '<=', '>=']
-        
-        tokens = []
-        code_lines = self.code.split('\n')
-        
-        for line in code_lines:
-            line = line.strip()
-            if not line:
-                continue
-            
-            tokens.extend(self.tokenize_line(line, keywords, operators))
-            
-        self.tokens = tokens
-        return tokens
+        self.operators = {
+            '+': 'PLUS',
+            '-': 'MINUS',
+            '*': 'MULTIPLY',
+            '/': 'DIVIDE',
+            '%': 'MODULO',
+            '==': 'EQUALS',
+            '!=': 'NOT_EQUALS',
+            '<': 'LESS_THAN',
+            '>': 'GREATER_THAN',
+            '<=': 'LESS_THAN_OR_EQUAL',
+            '>=': 'GREATER_THAN_OR_EQUAL'
+        }
+        self.tokens = []
 
-    def tokenize_line(self, line, keywords, operators):
+    def tokenize(self):
+        code_without_comments = re.sub(r'//[^\n]*', '', self.code)  # Remove single-line comments
+        code_without_comments = re.sub(r'/\*.*?\*/', '', code_without_comments, flags=re.DOTALL)  # Remove multi-line comments
+
         tokens = []
-        current_token = ''
-        
-        i = 0
-        while i < len(line):
-            char = line[i]
-            
-            if char.isalpha() or char == '_':
-                current_token += char
-                i += 1
-                while i < len(line) and (line[i].isalnum() or line[i] == '_'):
-                    current_token += line[i]
-                    i += 1
-                
-                if current_token in keywords:
-                    tokens.append((current_token, keywords[current_token]))
-                else:
-                    tokens.append((current_token, 'IDENTIFIER'))
-                
-                current_token = ''
-            
-            elif char.isdigit():
-                current_token += char
-                i += 1
-                while i < len(line) and line[i].isdigit():
-                    current_token += line[i]
-                    i += 1
-                
-                tokens.append((current_token, 'NUMBER'))
-                current_token = ''
-            
-            elif char in operators:
-                if i + 1 < len(line) and line[i:i+2] in operators:
-                    tokens.append((line[i:i+2], 'OPERATOR'))
-                    i += 2
-                else:
-                    tokens.append((char, 'OPERATOR'))
-                    i += 1
-            
-            elif char.isspace():
-                i += 1
-            
+        current_word = ''
+        in_string = False
+
+        for char in code_without_comments:
+            if char == '"':
+                if in_string:
+                    tokens.append(('STRING', current_word))
+                    current_word = ''
+                in_string = not in_string
+            elif in_string:
+                current_word += char
+            elif char.isalnum() or char == '_':
+                current_word += char
             else:
-                i += 1
-        
+                if current_word:
+                    if current_word in self.keywords:
+                        tokens.append((self.keywords[current_word], current_word))
+                    elif current_word.isdigit():
+                        tokens.append(('NUMBER', int(current_word)))
+                    else:
+                        tokens.append(('IDENTIFIER', current_word))
+                    current_word = ''
+                if char.strip():
+                    if char in self.operators:
+                        tokens.append((self.operators[char], char))
+                    else:
+                        tokens.append(('SYMBOL', char))
+
         return tokens
 
 # Example usage:
 code = """
-thodarai VK_Lexer:
-    athu __init__(self, code):
-        idam(self):
-            'code': code
-            'tokens': []
-        mudhala(self)
+int mukiyam() {
+    Paaru "Hello, Vk!";
+    int x = 5 + 3;
+    sollu x;
+}
 
-    thodarai tokenize(self):
-        keywords = {
-            'thodarai': 'CLASS',
-            'athu': 'DEF',
-            'idam': 'INIT',
-            'mudhala': 'END',
-            'niyal': 'FOR',
-            'siru': 'IF',
-            'koodal': 'ELSE',
-            'ippathaal': 'ELIF',
-            'annippadu': 'RETURN',
-            'kootu': 'APPEND',
-            'moolyam': 'INTEGER',
-            'varisai': 'FLOAT',
-            'vaathiyar': 'CHAR',
-            'pali': 'BOOLEAN',
-            'solluvai': 'STRING',
-            'Paaru': 'PRINTF',
-            'sollu': 'SCANF',
-            'int mukiyam': 'INT_MAIN',
-            'seru': 'ADD',
-            'kora': 'SUBTRACT',
-            'Ona': 'MULTIPLY',
-            'piri': 'DIVIDE'
-        }
-        
-        operators = ['+', '-', '*', '/', '=', '==', '!=', '<', '>', '<=', '>=']
-        
-        tokens = []
-        code_lines = self.code.split('\\n')
-        
-        for line in code_lines:
-            line = line.strip()
-            if not line:
-                continue
-            
-            tokens.extend(self.tokenize_line(line, keywords, operators))
-            
-        self.tokens = tokens
-        return tokens
-
-    thodarai tokenize_line(self, line, keywords, operators):
-        tokens = []
-        current_token = ''
-        
-        i = 0
-        while i < len(line):
-            char = line[i]
-            
-            if char.isalpha() or char == '_':
-                current_token += char
-                i += 1
-                while i < len(line) and (line[i].isalnum() or line[i] == '_'):
-                    current_token += line[i]
-                    i += 1
-                
-                if current_token in keywords:
-                    tokens.append((current_token, keywords[current_token]))
-                else:
-                    tokens.append((current_token, 'IDENTIFIER'))
-                
-                current_token = ''
-            
-            elif char.isdigit():
-                current_token += char
-                i += 1
-                while i < len(line) and line[i].isdigit():
-                    current_token += line[i]
-                    i += 1
-                
-                tokens.append((current_token, 'NUMBER'))
-                current_token = ''
-            
-            elif char in operators:
-                if i + 1 < len(line) and line[i:i+2] in operators:
-                    tokens.append((line[i:i+2], 'OPERATOR'))
-                    i += 2
-                else:
-                    tokens.append((char, 'OPERATOR'))
-                    i += 1
-            
-            elif char.isspace():
-                i += 1
-            
-            else:
-                i += 1
-        
-        return tokens
-
-# Testing the Lexer
-lexer = VK_Lexer(code)
+int main() {
+    int y = 10;
+    Paaru y;
+    niyal(int i = 0; i < 5; i++) {
+        Paaru i;
+    }
+    annippadu 0;
+}
+"""
+lexer = VkLexer(code)
 tokens = lexer.tokenize()
 for token in tokens:
     print(token)
-    
+                        
