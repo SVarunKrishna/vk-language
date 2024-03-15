@@ -12,15 +12,14 @@ class VK_Interpreter:
 
     def execute_statement(self, statement):
         keyword = statement[0]
-        if keyword == 'haa':
+        if keyword == 'int mukiyam':
+            # Handle function definition
+            pass
+        elif keyword == 'haa':
             # Handle 'if' statement
-            condition = statement[1]
-            true_block = statement[2]
-            false_block = statement[3] if len(statement) > 3 else None
+            condition, true_block = statement[1:]
             if self.eval_expr(condition):
                 self.interpret(true_block)
-            elif false_block:
-                self.interpret(false_block)
         elif keyword == 'haan':
             # Handle 'for' loop
             variable, start, end, step, block = statement[1:]
@@ -49,10 +48,11 @@ class VK_Interpreter:
             variable = statement[1]
             value = input("Enter value for {}: ".format(variable))
             self.symbol_table[variable] = int(value)  # Assuming input is always an integer
-        elif keyword == 'int mukiyam':
-            # Function definition, do nothing for now
-            pass
-        elif keyword == 'seru' or keyword == 'kora' or keyword == 'Ona' or keyword == 'piri':
+        elif keyword == 'Assignment':
+            # Handle variable assignment
+            variable, value = statement[1:]
+            self.symbol_table[variable] = value
+        elif keyword in ['seru', 'kora', 'Ona', 'piri']:
             # Handle arithmetic operations
             operator = keyword
             operand2 = self.eval_expr(statement[2])
@@ -77,4 +77,14 @@ class VK_Interpreter:
             return self.symbol_table[expr]
         else:
             return expr
-                
+
+# Sample usage
+if __name__ == "__main__":
+    # Example parsed code
+    parsed_code = [['int mukiyam', 'haa', 'a', '=', 5, ';'],
+                   ['int mukiyam', 'haa', 'b', '=', 3, ';']]
+    
+    # Initialize and run interpreter
+    interpreter = VK_Interpreter()
+    interpreter.interpret(parsed_code)
+    
