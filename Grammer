@@ -1,53 +1,87 @@
-program -> int_mukiyam() { statement_list }
+program            -> statement_list
 
-statement_list -> statement statement_list | ε
+statement_list     -> statement
+                    | statement_list statement
 
-statement -> variable_declaration | if_statement | for_loop | while_loop | do_while_loop | print_statement | scan_statement | assignment_statement | function_declaration
+statement          -> if_statement
+                    | for_loop
+                    | while_loop
+                    | do_while_loop
+                    | print_statement
+                    | scan_statement
+                    | function_definition
+                    | assignment_statement
+                    | declaration_statement
+                    | return_statement
 
-variable_declaration -> moolyam variable_name = expression ;
+if_statement       -> 'siru' expression 'idam' statement_list 'mudhala'
+                    | 'siru' expression 'idam' statement_list 'mudhala' 'koodal' statement_list 'mudhala'
+                    | 'siru' expression 'ippathaal' expression 'idam' statement_list 'mudhala'
+                    | 'siru' expression 'ippathaal' expression 'idam' statement_list 'mudhala' 'koodal' statement_list 'mudhala'
 
-if_statement -> haa ( expression ) { statement_list } else_block
+for_loop           -> 'niyal' identifier 'athu' expression 'varai' expression 'paadhai' expression 'idam' statement_list 'mudhala'
 
-else_block -> uhh { statement_list } | ε
+while_loop        -> 'Mm' expression 'idam' statement_list 'mudhala'
 
-for_loop -> haan ( initialization ; condition ; update ) { statement_list }
+do_while_loop     -> 'ye_mm' 'idam' statement_list 'Mm' expression 'mudhala'
 
-while_loop -> Mm ( condition ) { statement_list }
+print_statement   -> 'Paaru' expression_list ';'
 
-do_while_loop -> ye Mm { statement_list } while ( condition ) ;
+scan_statement    -> 'sollu' identifier ';'
 
-print_statement -> Paaru ( expression_list ) ;
+function_definition -> 'athu' identifier '(' parameter_list ')' '{' statement_list '}'
 
-scan_statement -> sollu variable_name ;
+assignment_statement -> identifier '=' expression ';'
 
-assignment_statement -> variable_name = expression ;
+declaration_statement -> 'moolyam' identifier '=' expression ';'
+                      | 'varisai' identifier '=' expression ';'
+                      | 'vaathiyar' identifier '=' expression ';'
+                      | 'pali' identifier '=' expression ';'
+                      | 'solluvai' identifier '=' expression ';'
 
-function_declaration -> int_mukiyam() { statement_list }
+return_statement  -> 'annippadu' expression ';'
 
-expression_list -> expression , expression_list | expression
+expression_list   -> expression
+                    | expression_list ',' expression
 
-expression -> term | expression + term | expression - term
+expression         -> logical_or
 
-term -> factor | term * factor | term / factor
+logical_or         -> logical_and
+                    | logical_or 'thodarai' logical_and
 
-factor -> ( expression ) | variable_name | literal_value
+logical_and        -> equality
+                    | logical_and 'mudhal' equality
 
-initialization -> variable_declaration | ε
+equality           -> comparison
+                    | equality 'ilakkiya' comparison
+                    | equality 'vazhuthu' comparison
 
-condition -> expression | ε
+comparison         -> addition
+                    | comparison 'yaavum' addition
+                    | comparison 'periya' addition
+                    | comparison 'periya_an' addition
+                    | comparison 'kaattu' addition
+                    | comparison 'kaattu_an' addition
 
-update -> assignment_statement | ε
+addition           -> multiplication
+                    | addition 'seru' multiplication
+                    | addition 'kora' multiplication
 
-variable_name -> [a-zA-Z_][a-zA-Z0-9_]*
+multiplication     -> exponentiation
+                    | multiplication 'ona' exponentiation
+                    | multiplication 'piri' exponentiation
 
-literal_value -> integer_literal | float_literal | character_literal | boolean_literal | string_literal
+exponentiation     -> unary
+                    | exponentiation 'mey' unary
 
-integer_literal -> [0-9]+
+unary              -> primary
+                    | 'seru' unary
+                    | 'kora' unary
 
-float_literal -> [0-9]+\.[0-9]+
-
-character_literal -> '[a-zA-Z0-9_]'
-
-boolean_literal -> pali
-
-string_literal -> ".*"
+primary            -> integer
+                    | float
+                    | string
+                    | char
+                    | boolean
+                    | identifier
+                    | '(' expression ')'
