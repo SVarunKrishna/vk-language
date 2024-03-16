@@ -1,8 +1,10 @@
 import re
 
-class VkLexer:
-    def __init__(self, code):
-        self.code = code
+class VK_Lexer:
+    def __init__(self, text):
+        self.text = text
+        self.pos = 0
+        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
         self.keywords = {
             'thodarai': 'CLASS',
             'athu': 'DEF',
@@ -14,7 +16,11 @@ class VkLexer:
             'ippathaal': 'ELIF',
             'annippadu': 'RETURN',
             'kootu': 'APPEND',
-            'moolyam': 'VARIABLE',
+            'moolyam': 'INTEGER',
+            'varisai': 'FLOAT',
+            'vaathiyar': 'CHAR',
+            'pali': 'BOOLEAN',
+            'solluvai': 'STRING',
             'Paaru': 'PRINTF',
             'sollu': 'SCANF',
             'int mukiyam': 'INT_MAIN',
@@ -22,6 +28,10 @@ class VkLexer:
             'kora': 'SUBTRACT',
             'Ona': 'MULTIPLY',
             'piri': 'DIVIDE',
+            'chutti': 'SWITCH',
+            'pirandh': 'TRY',
+            'pirindhu': 'CATCH',
+            'paeru': 'FINALLY',
             'vaathiyar_padithaal': 'INPUT',
             'vaathiyar_kodu': 'OUTPUT',
             'moolyam_vivarithi': 'MATH_LIBRARY',
@@ -44,74 +54,80 @@ class VkLexer:
             'mann_ootru': 'PLATFORM_ID'
         }
         self.operators = {
-            '+': 'PLUS',
-            '-': 'MINUS',
+            '+': 'ADD',
+            '-': 'SUBTRACT',
             '*': 'MULTIPLY',
             '/': 'DIVIDE',
-            '%': 'MODULO',
-            '==': 'EQUALS',
-            '!=': 'NOT_EQUALS',
-            '<': 'LESS_THAN',
-            '>': 'GREATER_THAN',
-            '<=': 'LESS_THAN_OR_EQUAL',
-            '>=': 'GREATER_THAN_OR_EQUAL'
+            '(': 'LPAREN',
+            ')': 'RPAREN',
+            ':': 'COLON',
+            '=': 'EQUALS',
+            ',': 'COMMA'
         }
-        self.tokens = []
+        self.regex_patterns = [
+            (r'\b(?:nool|vaanavil)\b', 'KEYWORD'),  # switch case keywords
+            (r'\b(?:pirindhu)\b', 'KEYWORD'),  # try-catch block keywords
+            (r'"[^"]*"', 'STRING'),  # String literals
+            (r'\d+\.\d+', 'FLOAT'),  # Float literals
+            (r'\d+', 'INTEGER'),  # Integer literals
+            (r'thodarai|athu|mudhala|niyal|siru|koodal|ippathaal|annippadu|kootu|int mukiyam|varisai|vaathiyar|pali|solluvai|Paaru|sollu|vaathiyar_padithaal|vaathiyar_kodu|moolyam_vivarithi|moolyam_mithalai|moolyam_sin|vaakku_vivarithi|vaakku_seer|vaakku_udaiya|kaar_vivarithi|udaiya_kaar|kaar_vithaika|arai_kuthirai|arai_kuthirai_mithalai|arai_kuthirai_vithai|veezh_vivarithi|veezh_vaakiyam|veezh_udaiya_kattam|mann_kadhai|mann_pirachanai|mann_ootru', 'KEYWORD'),  # Keywords
+            (r'\+|-|\*|/|\(|\)|:|=|,', 'OPERATOR'),  # Operators
+            (r'[a-zA-Z_][a-zA-Z0-9_]*', 'VARIABLE'),  # Variables
+            (r'\n', 'NEWLINE')  # Newline
+        ]
 
-    def tokenize(self):
-        code_without_comments = re.sub(r'//[^\n]*', '', self.code)  # Remove single-line comments
-        code_without_comments = re.sub(r'/\*.*?\*/', '', code_without_comments, flags=re.DOTALL)  # Remove multi-line comments
+    def error(self):
+        raise Exception('Invalid character')
 
-        tokens = []
-        current_word = ''
-        in_string = False
+    def advance(self):
+        self.pos += 1
+        self.current_char = self.text[self.pos] if self.pos < len(self.text) else None
 
-        for char in code_without_comments:
-            if char == '"':
-                if in_string:
-                    tokens.append(('STRING', current_word))
-                    current_word = ''
-                in_string = not in_string
-            elif in_string:
-                current_word += char
-            elif char.isalnum() or char == '_':
-                current_word += char
-            else:
-                if current_word:
-                    if current_word in self.keywords:
-                        tokens.append((self.keywords[current_word], current_word))
-                    elif current_word.isdigit():
-                        tokens.append(('NUMBER', int(current_word)))
-                    else:
-                        tokens.append(('IDENTIFIER', current_word))
-                    current_word = ''
-                if char.strip():
-                    if char in self.operators:
-                        tokens.append((self.operators[char], char))
-                    else:
-                        tokens.append(('SYMBOL', char))
+    def peek(self):
+        peek_pos = self.pos + 1
+        return self.text[peek_pos] if peek_pos < len(self.text) else None
 
-        return tokens
-
-# Example usage:
-code = """
-int mukiyam() {
-    Paaru "Hello, Vk!";
-    int x = 5 + 3;
-    sollu x;
-}
-
-int main() {
-    int y = 10;
-    Paaru y;
-    niyal(int i = 0; i < 5; i++) {
-        Paaru i;
-    }
-    annippadu 0;
-}
-"""
-lexer = VkLexer(code)
-tokens = lexer.tokenize()
-for token in tokens:
-    print(token)
-    
+    def get_token(self):
+        while self.current_char is not None:
+            if self.current_char.isspace():
+                self.advance()
+                continue
+            if self.current_char in self.operators:
+                token_type = self.operators[self.current_char]
+                self.advance()
+                return {'type': token_type, 'value': token_type}
+            if self.current_char == '"':
+                self.advance()
+                start_pos = self.pos
+                while self.current_char != '"':
+                    self.advance()
+                token_value = self.text[start_pos:self.pos]
+                self.advance()  # Consume closing "
+                return {'type': 'STRING', 'value': token_value}
+            if self.current_char.isdigit():
+                token_value = ''
+                while self.current_char is not None and self.current_char.isdigit():
+                    token_value += self.current_char
+                    self.advance()
+                if self.current_char == '.':
+                    token_value += self.current_char
+                    self.advance()
+                    while self.current_char is not None and self.current_char.isdigit():
+                        token_value += self.current_char
+                        self.advance()
+                    return {'type': 'FLOAT', 'value': token_value}
+                else:
+                    return {'type': 'INTEGER', 'value': token_value}
+            if self.current_char.isalpha() or self.current_char == '_':
+                token_value = ''
+                while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
+                    token_value += self.current_char
+                    self.advance()
+                token_type = self.keywords.get(token_value, 'VARIABLE')
+                return {'type': token_type, 'value': token_value}
+            if self.current_char == '\n':
+                self.advance()
+                return {'type': 'NEWLINE', 'value': '\n'}
+            self.error()
+        return {'type': 'EOF', 'value': None}
+                
