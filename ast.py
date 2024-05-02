@@ -1,4 +1,4 @@
-from vk_language.base import Node
+from vk_language import Node
 
 # base.py
 class Node:
