@@ -1,5 +1,3 @@
-from vk_language.base import Node
-
 # base.py
 class Node:
     def eval(self):
