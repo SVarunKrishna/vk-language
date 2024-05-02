@@ -1,6 +1,6 @@
 from abc import ABC, abstractclassmethod
 
-from ..__vkppworld__ import __vars__
+from ..__vkworld__ import __vars__
 
 
 class Node(ABC):
