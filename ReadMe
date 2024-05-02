@@ -70,7 +70,7 @@ int mukiyam() {
 
   Installation
 Vk programming language requires Python to run. You can download or clone the Vk interpreter code from the GitHub repository.
-  git clone https://github.com/your_username/vk-interpreter.git
+  git clone https://github.com/SVarunKrishna/vk-interpreter.git
 
   Contributing
 Contributions to Vk programming language are welcome! If you have any ideas, bug fixes, or improvements, feel free to open an issue or submit a pull request on the GitHub repository.
